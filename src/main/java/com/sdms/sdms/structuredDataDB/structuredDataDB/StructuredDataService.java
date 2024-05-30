@@ -1,7 +1,5 @@
-package com.sdms.sdms.structuredDataDB;
+package com.sdms.sdms.structuredDataDB.structuredDataDB;
 
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
