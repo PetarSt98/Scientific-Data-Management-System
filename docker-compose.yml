@@ -1,5 +1,5 @@
 services:
-  db:
+  postgres_db:
     container_name: sdms-DB
     image: postgres
     environment:
@@ -11,12 +11,28 @@ services:
     ports:
       - "5332:5432"
     networks:
-      - db
+      - backend_network
+    restart: unless-stopped
+
+  mongo_db:
+    container_name: usdms-DB
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: pstojkov
+      MONGO_INITDB_ROOT_PASSWORD: proba123
+    networks:
+      - backend_network
+    volumes:
+      - mongo_db:/data/db
+      - /c/Users/petar/Downloads:/Downloads
+    ports:
+      - "27017:27017"
     restart: unless-stopped
 
 networks:
-  db:
+  backend_network:
     driver: bridge
 
 volumes:
   db:
+  mongo_db:

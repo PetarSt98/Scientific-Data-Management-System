@@ -2,6 +2,9 @@ server:
     port: 8080
 
 spring:
+    data:
+        mongodb:
+            uri: mongodb://pstojkov:proba123@localhost:27017/images_db
     datasource:
         url: jdbc:postgresql://localhost:5332/structureddata
         username: pstojkov
