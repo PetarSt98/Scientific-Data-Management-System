@@ -5,6 +5,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,12 +16,10 @@ import java.io.IOException;
 public class StructuredDataController {
 
     private final StructuredDataService structuredDataService;
-    private final StructuredDataRepository structuredDataRepository;
 
-    @Autowired
+    @Autowired // bolje je ovo sa kontruktorom i final nego bezkao u unstructured
     public StructuredDataController(StructuredDataService structuredDataService, StructuredDataRepository structuredDataRepository) {
         this.structuredDataService = structuredDataService;
-        this.structuredDataRepository = structuredDataRepository;
     }
 
     @PostMapping("/upload")
@@ -36,6 +35,7 @@ public class StructuredDataController {
     }
 
     @GetMapping("/display-by-id/{id}")
+    @PreAuthorize("hasRole('client_admin')")
     public String displayData(@PathVariable("id") Long id) {
         StructuredData data = structuredDataService.getJsonDataById(id)
                 .orElseThrow(() -> new RuntimeException("Data with id " + id + " does not exist"));
@@ -44,6 +44,7 @@ public class StructuredDataController {
     }
 
     @GetMapping("/display-by-name/{name}")
+    @PreAuthorize("hasRole('client_user')")
     public String displayData(@PathVariable("name") String name) {
         StructuredData data = structuredDataService.getJsonDataByName(name)
                 .orElseThrow(() -> new RuntimeException("Data with name " + name + " does not exist"));

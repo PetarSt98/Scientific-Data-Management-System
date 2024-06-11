@@ -1,5 +1,5 @@
 server:
-    port: 8080
+    port: 3000
 
 spring:
     data:
@@ -19,3 +19,14 @@ spring:
         show-sql: true
     main:
         web-application-type: servlet
+    security:
+        oauth2:
+            resourceserver:
+                jwt:
+                    issuer-uri: http://localhost:8080/realms/sdms-realm
+                    jwk-set-uri: http://localhost:8080/realms/sdms-realm/protocol/openid-connect/certs
+jwt:
+    auth:
+        converter:
+            resource-id: sdms-rest-api
+            principle-attribute: preferred_username

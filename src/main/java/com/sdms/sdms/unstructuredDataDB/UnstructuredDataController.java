@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "api/v1/unstructured-data")
 public class UnstructuredDataController {
-    @Autowired
+    @Autowired // bolje je dodati final i konstruktor
     private UnstructuredDataService unstructuredDataService;
 
     @PostMapping("/upload")
