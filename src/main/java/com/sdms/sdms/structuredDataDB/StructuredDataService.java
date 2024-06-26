@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -54,5 +57,18 @@ public class StructuredDataService {
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 
         return new ResponseEntity<>(buf, headers, HttpStatus.OK);
+    }
+
+    public void editFile(StructuredDataController.Changes request) {
+        for (Map.Entry<String, String> entry : request.changes().entrySet()) {
+            structuredDataRepository.setValueByIdAndPath(request.id(), List.of(entry.getKey().split(",")), entry.getValue());
+//            System.out.println(key);
+        }
+    }
+
+    public void updateFile(StructuredDataController.Changes request) {
+        for (Map.Entry<String, String> entry : request.changes().entrySet()) {
+            structuredDataRepository.addValueByIdAndPath(request.id(), List.of(entry.getKey().split(",")), entry.getValue());
+        }
     }
 }
