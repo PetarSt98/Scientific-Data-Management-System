@@ -40,4 +40,14 @@ public class StructuredData {
     public void setName(String name) {
         this.name = name;
     }
+
+    public StructuredData(Long id, String data, String name) {
+        this.id = id;
+        this.data = data;
+        this.name = name;
+    }
+
+    public StructuredData() {
+
+    }
 }
