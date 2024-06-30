@@ -2,6 +2,7 @@ package com.sdms.sdms.structuredDataDB;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,7 +18,7 @@ public class StructuredDataController {
     private final StructuredDataService structuredDataService;
 
     @Autowired // bolje je ovo sa kontruktorom i final nego bezkao u unstructured
-    public StructuredDataController(StructuredDataService structuredDataService, StructuredDataRepository structuredDataRepository) {
+    public StructuredDataController(StructuredDataService structuredDataService) {
         this.structuredDataService = structuredDataService;
     }
 
@@ -35,7 +36,7 @@ public class StructuredDataController {
 
     public record Changes (Map<String, String> changes, String name, long id) {}
 
-    @PostMapping("/edit")
+    @PatchMapping("/edit")
     public ResponseEntity<String> editData(@RequestBody Changes request) {
         try {
             structuredDataService.editFile(request);
@@ -71,7 +72,7 @@ public class StructuredDataController {
 
     @GetMapping("/display-by-name/{name}")
     @PreAuthorize("hasRole('client_user')")
-    public String displayData(@PathVariable("name") String name) {
+    public String displayDataName(@PathVariable("name") String name) {
         StructuredData data = structuredDataService.getJsonDataByName(name)
                 .orElseThrow(() -> new RuntimeException("Data with name " + name + " does not exist"));
 
@@ -79,6 +80,7 @@ public class StructuredDataController {
     }
 
     @GetMapping("/download-by-id/{id}")
+    @Secured("permitAll")
     public ResponseEntity<?> downloadDataAsFile(@PathVariable("id") Long id) {
         try {
             return structuredDataService.downloadFileById(id);
@@ -91,3 +93,4 @@ public class StructuredDataController {
         }
     }
 }
+// @Profile jako korisna annotacija
